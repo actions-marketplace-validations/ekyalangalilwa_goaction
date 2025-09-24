@@ -7,7 +7,7 @@ project will generate all the required files for the script (This generation can
 automattically with Github action integration). The library also exposes neat API to get workflow
 information.
 
-Required Steps
+# Required Steps
 
 - [x] Write a Go script.
 
@@ -18,7 +18,7 @@ Required Steps
 See simplest example for a Goaction script: (posener/goaction-example) https://github.com/posener/goaction-example,
 or an example that demonstrait using Github APIs: (posener/goaction-issues-example) https://github.com/posener/goaction-issues-example.
 
-Writing a Goaction Script
+# Writing a Goaction Script
 
 Write Github Action by writing Go code! Just start a Go module with a main package, and execute it
 as a Github action using Goaction, or from the command line using `go run`.
@@ -37,7 +37,7 @@ easy-to-use API. See the documentation for more information.
 Code segments which should run only in Github action (called "CI mode"), and not when the main
 package runs as a command line tool, should be protected by a `if goaction.CI { ... }` block.
 
-Goaction Configuration
+# Goaction Configuration
 
 In order to convert the repository to a Github action, goaction command line should run on the
 **"main file"** (described above). This command can run manually (by ./cmd/goaction) but luckily
@@ -49,32 +49,32 @@ When a new commit is pushed, Goaction makes sure that the Github action files ar
 
 Add the following content to `.github/workflows/goaction.yml`
 
- on:
-   pull_request:
-     branches: [main]
-   push:
-     branches: [main]
- permissions:
-   # Goaction needs permissions to update pull requests comments and update contents.
-   pull-requests: write
-   contents: write
- jobs:
-   goaction:
-     runs-on: ubuntu-latest
-     steps:
-     - name: Check out repository
-       uses: actions/checkout@v2
-     - name: Update action files
-       uses: posener/goaction@v1
-       with:
-         # Optional: required only for commenting on PRs.
-         github-token: '${{ secrets.GITHUB_TOKEN }}'
-     # Optional: now that the script is a Github action, it is possible to run it in the
-     # workflow.
-     - name: Example
-       uses: ./
+	on:
+	  pull_request:
+	    branches: [main]
+	  push:
+	    branches: [main]
+	permissions:
+	  # Goaction needs permissions to update pull requests comments and update contents.
+	  pull-requests: write
+	  contents: write
+	jobs:
+	  goaction:
+	    runs-on: ubuntu-latest
+	    steps:
+	    - name: Check out repository
+	      uses: actions/checkout@v2
+	    - name: Update action files
+	      uses: posener/goaction@v1
+	      with:
+	        # Optional: required only for commenting on PRs.
+	        github-token: '${{ secrets.GITHUB_TOKEN }}'
+	    # Optional: now that the script is a Github action, it is possible to run it in the
+	    # workflow.
+	    - name: Example
+	      uses: ./
 
-Goaction Artifacts
+# Goaction Artifacts
 
 ./action.yml: A "metadata" file for Github actions. If this file exists, the repository is
 considered as Github action, and the file contains information that instructs how to invoke this
@@ -88,7 +88,7 @@ container can also be built and tested manually:
 	$ docker build -t my-action .
 	$ docker run --rm my-action
 
-Annotations
+# Annotations
 
 Goaction parses Go script file and looks for annotations that extends the information that exists in
 the function calls. Goaction annotations are a comments that start with `//goaction:` (no space
@@ -102,13 +102,12 @@ after slashes). They can only be set on a `var` definition. The following annota
 
 * `//goaction:default <value>` - add default value for `os.Getenv`.
 
-Using Goaction
+# Using Goaction
 
 A list of projects which are using Goaction (please send a PR if your project uses goaction and does
 not appear her).
 
 * (posener/goreadme) http://github.com/posener/goreadme
-
 */
 package goaction
 
@@ -155,7 +154,7 @@ var (
 	// copy of your repository if your workflow uses the actions/checkout action. If you don't use
 	// the actions/checkout action, the directory will be empty. For example,
 	// /home/runner/work/my-repo-name/my-repo-name.
-	Workspace = os.Getenv("GITHUB_WORKSPACE")
+	// Workspace = os.Getenv("GITHUB_WORKSPACE")
 	// The commit SHA that triggered the workflow. For example,
 	// ffac537e6cbbf934b08745a378932722df287a53.
 	SHA = os.Getenv("GITHUB_SHA")
