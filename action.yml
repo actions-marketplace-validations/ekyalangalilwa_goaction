@@ -14,7 +14,7 @@ inputs:
     description: "Override action description, the default description is the package synopsis."
     required: false
   image:
-    default: golang:1.14.2-alpine3.11
+    default: golang:1.24-alpine3.22
     description: "Override Docker image to run the action with (See https://hub.docker.com/_/golang?tab=tags)."
     required: false
   install:
