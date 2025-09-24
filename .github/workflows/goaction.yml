@@ -29,7 +29,7 @@ jobs:
     - name: Update action files
       uses: ./
       with:
-        name: posener/goaction
+        name: ekyalangalilwa/goaction
         description: Github actions for Go code
         path: cmd/goaction
         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
