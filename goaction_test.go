@@ -18,7 +18,7 @@ func TestVars(t *testing.T) {
 	assert.NotEmpty(t, RunNum)
 	assert.NotEmpty(t, ActionID)
 	assert.NotEmpty(t, Actor)
-	// assert.NotEmpty(t, Workspace)
+	assert.NotEmpty(t, Workspace)
 	assert.NotEmpty(t, SHA)
 	assert.NotEmpty(t, Ref)
 

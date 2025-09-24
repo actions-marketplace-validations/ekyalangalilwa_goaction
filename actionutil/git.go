@@ -19,6 +19,10 @@ func GitConfig(name, email string) error {
 	if err != nil {
 		return err
 	}
+	err = git("config", "--global", "--add", "safe.directory", "'/github/workspace'").ToStdout()
+	if err != nil {
+		return err
+	}
 	// Prevent errors "fatal: detected dubious ownership in repository at ...".
 	return git("config", "--global", "--add", "safe.directory", "'*'").ToStdout()
 }

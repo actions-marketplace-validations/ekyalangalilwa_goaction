@@ -154,7 +154,7 @@ var (
 	// copy of your repository if your workflow uses the actions/checkout action. If you don't use
 	// the actions/checkout action, the directory will be empty. For example,
 	// /home/runner/work/my-repo-name/my-repo-name.
-	// Workspace = os.Getenv("GITHUB_WORKSPACE")
+	Workspace = os.Getenv("GITHUB_WORKSPACE")
 	// The commit SHA that triggered the workflow. For example,
 	// ffac537e6cbbf934b08745a378932722df287a53.
 	SHA = os.Getenv("GITHUB_SHA")
