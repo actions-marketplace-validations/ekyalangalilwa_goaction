@@ -5,7 +5,6 @@ import (
 	"context"
 	"errors"
 	"flag"
-	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -16,7 +15,6 @@ import (
 	"text/template"
 
 	"github.com/goccy/go-yaml"
-	"github.com/posener/goaction"
 	"github.com/posener/goaction/actionutil"
 	"github.com/posener/goaction/internal/metadata"
 	"github.com/posener/goaction/log"
@@ -103,6 +101,9 @@ func main() {
 	// Create dockerfile
 	log.Printf("Writing %s\n", dockerfile)
 	dir, err := pathRelDir(*path)
+	if err != nil {
+		log.Printf("Error %v\n", err)
+	}
 	data := tmplData{
 		Dir:     dir,
 		Image:   *image,
@@ -116,56 +117,56 @@ func main() {
 		log.Fatal(err)
 	}
 
-	git("config", "--global", "--add", "safe.directory", "'/github/workspace'")
+	// git("config", "--global", "--add", "safe.directory", "'/github/workspace'")
 
-	diff := gitDiff()
+	// diff := gitDiff()
 
-	if diff != "" {
-		log.Printf("Applied changes:\n\n%s\n\n", diff)
-	} else {
-		log.Printf("No changes were made.")
-	}
+	// if diff != "" {
+	// 	log.Printf("Applied changes:\n\n%s\n\n", diff)
+	// } else {
+	// 	log.Printf("No changes were made.")
+	// }
 
-	if !goaction.CI {
-		return
-	}
+	// if !goaction.CI {
+	// 	return
+	// }
 
-	err = actionutil.GitConfig("goaction", email)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// err = actionutil.GitConfig("goaction", email)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	switch goaction.Event {
-	case goaction.EventPush:
-		log.Printf("Push mode.")
-		if diff == "" {
-			log.Printf("Skipping commit stage.")
-			break
-		}
-		push()
-	case goaction.EventPullRequest:
-		log.Printf("Pull request mode.")
-		pr(diff)
-	default:
-		log.Printf("Unsupported action mode: %s", goaction.Event)
-	}
+	// switch goaction.Event {
+	// case goaction.EventPush:
+	// 	log.Printf("Push mode.")
+	// 	if diff == "" {
+	// 		log.Printf("Skipping commit stage.")
+	// 		break
+	// 	}
+	// 	push()
+	// case goaction.EventPullRequest:
+	// 	log.Printf("Pull request mode.")
+	// 	pr(diff)
+	// default:
+	// 	log.Printf("Unsupported action mode: %s", goaction.Event)
+	// }
 }
 
-func gitDiff() string {
-	var diff strings.Builder
-	for _, path := range []string{action, dockerfile} {
-		// Add files to git, in case it does not exists
-		d, err := actionutil.GitDiff(path)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if d != "" {
-			diff.WriteString(fmt.Sprintf("Path `%s`:\n\n", path))
-			diff.WriteString(fmt.Sprintf("```diff\n%s\n```\n\n", d))
-		}
-	}
-	return diff.String()
-}
+// func gitDiff() string {
+// 	var diff strings.Builder
+// 	for _, path := range []string{action, dockerfile} {
+// 		// Add files to git, in case it does not exists
+// 		d, err := actionutil.GitDiff(path)
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		if d != "" {
+// 			diff.WriteString(fmt.Sprintf("Path `%s`:\n\n", path))
+// 			diff.WriteString(fmt.Sprintf("```diff\n%s\n```\n\n", d))
+// 		}
+// 	}
+// 	return diff.String()
+// }
 
 // Commit and push chnages to upstream branch.
 func push() {
