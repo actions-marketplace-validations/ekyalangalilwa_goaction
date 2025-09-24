@@ -116,6 +116,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	git("config", "--global", "--add", "safe.directory", "'/github/workspace'")
+
 	diff := gitDiff()
 
 	if diff != "" {
@@ -238,3 +240,8 @@ RUN go build -o /bin/action {{ .Dir }}
 
 ENTRYPOINT [ "/bin/action" ]
 `))
+
+func git(subcmd string, args ...string) script.Stream {
+	args = append([]string{subcmd}, args...)
+	return script.ExecHandleStderr(os.Stderr, "git", args...)
+}
